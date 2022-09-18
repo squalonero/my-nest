@@ -1,0 +1,96 @@
+[
+  {
+    "_id": "efe2e994-c15a-428c-8061-9923d216d73b",
+    "colId": "6b415355-1586-42c3-9798-c8774b305607",
+    "containerId": "",
+    "name": "create",
+    "url": "//localhost:3080/booking",
+    "method": "POST",
+    "sortNum": 10000,
+    "created": "2022-09-15T13:05:50.420Z",
+    "modified": "2022-09-16T14:18:34.929Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"user\": {\n    \"email\": \"test@test.it\",\n    \"phone\": \"3421234567\"\n  },\n  \"status\": \"PENDING\",\n  \"date\": \"2022-10-16\",\n  \"numPeople\": 2,\n  \"passengers\": [\n    {\n      \"name\": \"Pippo\",\n      \"lastName\": \"Baudo\",\n      \"age\": 45\n    },\n    {\n      \"name\": \"Pluto\",\n      \"lastName\": \"Baudo\",\n      \"age\": 43\n    }\n  ]\n}",
+      "form": []
+    },
+    "tests": []
+  },
+  {
+    "_id": "0a1e2683-23ac-45cb-af0d-bad1692ba0a5",
+    "colId": "6b415355-1586-42c3-9798-c8774b305607",
+    "containerId": "",
+    "name": "list",
+    "url": "//localhost:3080/booking?page=1",
+    "method": "GET",
+    "sortNum": 20000,
+    "created": "2022-09-16T09:27:34.892Z",
+    "modified": "2022-09-16T10:55:25.848Z",
+    "headers": [],
+    "params": [
+      {
+        "name": "page",
+        "value": "1",
+        "isPath": false
+      }
+    ],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"user\": {\n    \"email\": \"test@test.it\",\n    \"phone\": \"3421234567\"\n  },\n  \"status\": \"PENDING\",\n  \"date\": \"2022-09-01\",\n  \"numPeople\": 2,\n  \"passengers\": [\n    {\n      \"name\": \"Pippo\",\n      \"lastName\": \"Baudo\",\n      \"age\": 45\n    },\n    {\n      \"name\": \"Pluto\",\n      \"lastName\": \"Baudo\",\n      \"age\": 43\n    }\n  ]\n}",
+      "form": []
+    },
+    "tests": []
+  },
+  {
+    "_id": "13f13269-505e-4fed-afe2-4c7ea237644b",
+    "colId": "6b415355-1586-42c3-9798-c8774b305607",
+    "containerId": "",
+    "name": "byMonth",
+    "url": "//localhost:3080/booking/getMonthAvailability?monthDate=2022-09",
+    "method": "GET",
+    "sortNum": 30000,
+    "created": "2022-09-16T14:24:24.173Z",
+    "modified": "2022-09-18T09:14:02.149Z",
+    "headers": [],
+    "params": [
+      {
+        "name": "monthDate",
+        "value": "2022-09",
+        "isPath": false
+      }
+    ],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"user\": {\n    \"email\": \"test@test.it\",\n    \"phone\": \"3421234567\"\n  },\n  \"status\": \"PENDING\",\n  \"date\": \"2022-09-01\",\n  \"numPeople\": 2,\n  \"passengers\": [\n    {\n      \"name\": \"Pippo\",\n      \"lastName\": \"Baudo\",\n      \"age\": 45\n    },\n    {\n      \"name\": \"Pluto\",\n      \"lastName\": \"Baudo\",\n      \"age\": 43\n    }\n  ]\n}",
+      "form": []
+    },
+    "tests": []
+  },
+  {
+    "_id": "be1765b9-54db-4e78-9066-7bce8c3c4a5d",
+    "colId": "6b415355-1586-42c3-9798-c8774b305607",
+    "containerId": "",
+    "name": "byDate",
+    "url": "//localhost:3080/booking/getDayAvailability?date=2022-09-17",
+    "method": "GET",
+    "sortNum": 40000,
+    "created": "2022-09-16T14:40:12.779Z",
+    "modified": "2022-09-18T14:05:25.686Z",
+    "headers": [],
+    "params": [
+      {
+        "name": "date",
+        "value": "2022-09-17",
+        "isPath": false
+      }
+    ],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"user\": {\n    \"email\": \"test@test.it\",\n    \"phone\": \"3421234567\"\n  },\n  \"status\": \"PENDING\",\n  \"date\": \"2022-09-01\",\n  \"numPeople\": 2,\n  \"passengers\": [\n    {\n      \"name\": \"Pippo\",\n      \"lastName\": \"Baudo\",\n      \"age\": 45\n    },\n    {\n      \"name\": \"Pluto\",\n      \"lastName\": \"Baudo\",\n      \"age\": 43\n    }\n  ]\n}",
+      "form": []
+    },
+    "tests": []
+  }
+]
