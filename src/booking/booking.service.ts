@@ -2,6 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { InjectConnection, InjectModel } from '@nestjs/mongoose';
 import { Connection, Model } from 'mongoose';
+import { DayAvailability } from 'src/schemas/DayAvailability';
+import { MonthAvailability } from 'src/schemas/MonthAvailability';
 import { CreateBookingDto } from './dto/create-booking.dto';
 import { UpdateBookingDto } from './dto/update-booking.dto';
 import { Availability } from './entities/availability.entity';
@@ -33,92 +35,13 @@ export class BookingService {
   }
 
   async getMonthAvailability(monthDate: string): Promise<Availability[]> {
-    const result = await this.bookingModel.aggregate([
-      {
-        $project: {
-          dateString: {
-            $dateToString: {
-              format: '%Y-%m-%d',
-              date: '$date',
-            },
-          },
-          month: { $month: '$date' },
-          year: { $year: '$date' },
-          status: 1,
-        },
-      },
-      {
-        $match: {
-          $and: [
-            {
-              $expr: {
-                $eq: [{ $month: new Date(monthDate) }, '$month'],
-              },
-            },
-            {
-              $expr: {
-                $eq: [{ $year: new Date(monthDate) }, '$year'],
-              },
-            },
-          ],
-        },
-      },
-      {
-        $group: {
-          _id: '$dateString',
-          pending: { $sum: { $cond: [{ $eq: ['$status', 'PENDING'] }, 1, 0] } },
-          confirmed: {
-            $sum: { $cond: [{ $eq: ['$status', 'CONFIRMED'] }, 1, 0] },
-          },
-          cancelled: {
-            $sum: { $cond: [{ $eq: ['$status', 'CANCELLED'] }, 1, 0] },
-          },
-          total: { $sum: 1 },
-        },
-      },
-      { $sort: { _id: 1 } },
-    ]);
-
-    return result;
+    return this.bookingModel.aggregate(MonthAvailability(monthDate));
   }
 
   async getDayAvailability(day: string): Promise<Availability> {
-    const result: Availability[] = await this.bookingModel.aggregate([
-      {
-        $project: {
-          dateString: {
-            $dateToString: {
-              format: '%Y-%m-%d',
-              date: '$date',
-            },
-          },
-          month: { $month: '$date' },
-          year: { $year: '$date' },
-          status: 1,
-        },
-      },
-      {
-        $match: {
-          $expr: {
-            $eq: [day, '$dateString'],
-          },
-        },
-      },
-      {
-        $group: {
-          _id: '$dateString',
-          pending: { $sum: { $cond: [{ $eq: ['$status', 'PENDING'] }, 1, 0] } },
-          confirmed: {
-            $sum: { $cond: [{ $eq: ['$status', 'CONFIRMED'] }, 1, 0] },
-          },
-          cancelled: {
-            $sum: { $cond: [{ $eq: ['$status', 'CANCELLED'] }, 1, 0] },
-          },
-          total: { $sum: 1 },
-        },
-      },
-      { $sort: { _id: 1 } },
-    ]);
+    const result: Availability[] = await this.bookingModel.aggregate(
+      DayAvailability(day),
+    );
 
     return (
       result[0] ?? {
