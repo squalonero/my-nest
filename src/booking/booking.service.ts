@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { InjectConnection, InjectModel } from '@nestjs/mongoose';
-import { Connection, Model } from 'mongoose';
-import { DayAvailability } from 'src/schemas/DayAvailability';
-import { MonthAvailability } from 'src/schemas/MonthAvailability';
+import { Connection, Model, ObjectId } from 'mongoose';
+import { DayAvailabilityAgg } from 'src/booking/utils/dayAvailabilityAgg';
+import { MonthAvailabilityAgg } from './utils/monthAvailabilityAgg';
 import { CreateBookingDto } from './dto/create-booking.dto';
 import { UpdateBookingDto } from './dto/update-booking.dto';
 import { Availability } from './entities/availability.entity';
@@ -35,12 +35,12 @@ export class BookingService {
   }
 
   async getMonthAvailability(monthDate: string): Promise<Availability[]> {
-    return this.bookingModel.aggregate(MonthAvailability(monthDate));
+    return this.bookingModel.aggregate(MonthAvailabilityAgg(monthDate));
   }
 
   async getDayAvailability(day: string): Promise<Availability> {
     const result: Availability[] = await this.bookingModel.aggregate(
-      DayAvailability(day),
+      DayAvailabilityAgg(day),
     );
 
     return (
@@ -68,7 +68,20 @@ export class BookingService {
     return `This action updates a #${id} booking`;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} booking`;
+  async delete(id: string) {
+    try {
+      console.log('delete', id);
+
+      const ret = await this.bookingModel.deleteOne({ _id: id });
+      return ret;
+      // console.log('ret', ret);
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  async deleteMany(bookings: Booking[]) {
+    const del = await this.bookingModel.deleteMany(bookings);
+    return del;
   }
 }

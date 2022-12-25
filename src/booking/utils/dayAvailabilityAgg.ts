@@ -5,7 +5,7 @@
 
 import { PipelineStage } from 'mongoose';
 
-export const DayAvailability = (inputDate): PipelineStage[] => [
+export const DayAvailabilityAgg = (inputDate): PipelineStage[] => [
   {
     $project: {
       selectedDate: inputDate,
@@ -109,3 +109,4 @@ export const DayAvailability = (inputDate): PipelineStage[] => [
   },
   { $sort: { _id: 1 } },
 ];
+
