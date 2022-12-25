@@ -8,12 +8,12 @@
     "method": "POST",
     "sortNum": 10000,
     "created": "2022-09-15T13:05:50.420Z",
-    "modified": "2022-09-23T09:55:47.021Z",
+    "modified": "2022-09-27T07:22:17.629Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n  \"user\": {\n    \"email\": \"test@test.it\",\n    \"phone\": \"3421234567\"\n  },\n  \"status\": \"PENDING\",\n  \"date\": \"2022-09-25\",\n  \"passengers\": [\n    {\n      \"name\": \"Pippo\",\n      \"lastName\": \"Baudo\",\n      \"age\": 45\n    },\n    {\n      \"name\": \"Pluto\",\n      \"lastName\": \"Baudo\",\n      \"age\": 43\n    }\n  ]\n}",
+      "raw": "{\n  \"user\": {\n    \"email\": \"test@test.it\",\n    \"phone\": \"3421234567\"\n  },\n  \"date\": \"2022-10-02\",\n  \"passengers\": [\n    {\n      \"name\": \"Pippo\",\n      \"lastName\": \"Baudo\",\n      \"age\": 45\n    },\n    {\n      \"name\": \"Pluto\",\n      \"lastName\": \"Baudo\",\n      \"age\": 47\n    },\n        {\n      \"name\": \"Peppe\",\n      \"lastName\": \"Fetish\",\n      \"age\": 47\n    }\n  ]\n}",
       "form": []
     },
     "tests": []
@@ -27,7 +27,7 @@
     "method": "GET",
     "sortNum": 20000,
     "created": "2022-09-16T09:27:34.892Z",
-    "modified": "2022-09-16T10:55:25.848Z",
+    "modified": "2022-10-28T12:44:48.598Z",
     "headers": [],
     "params": [
       {
@@ -36,11 +36,6 @@
         "isPath": false
       }
     ],
-    "body": {
-      "type": "json",
-      "raw": "{\n  \"user\": {\n    \"email\": \"test@test.it\",\n    \"phone\": \"3421234567\"\n  },\n  \"status\": \"PENDING\",\n  \"date\": \"2022-09-01\",\n  \"numPeople\": 2,\n  \"passengers\": [\n    {\n      \"name\": \"Pippo\",\n      \"lastName\": \"Baudo\",\n      \"age\": 45\n    },\n    {\n      \"name\": \"Pluto\",\n      \"lastName\": \"Baudo\",\n      \"age\": 43\n    }\n  ]\n}",
-      "form": []
-    },
     "tests": []
   },
   {

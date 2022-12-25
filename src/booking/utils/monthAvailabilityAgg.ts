@@ -5,7 +5,7 @@
 
 import { PipelineStage } from 'mongoose';
 
-export const MonthAvailability = (inputDate): PipelineStage[] => [
+export const MonthAvailabilityAgg = (inputDate): PipelineStage[] => [
   {
     $project: {
       selectedDate: {

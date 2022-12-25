@@ -2,6 +2,7 @@ import { CreateUserDto } from 'src/user/dto/create-user.dto';
 import { IsNotEmpty, IsDateString } from 'class-validator';
 
 export enum BookingStatus {
+  PENDING_EMAIL = 'PENDING_EMAIL_CONFIRMATION',
   PENDING = 'PENDING',
   CONFIRMED = 'CONFIRMED',
   CANCELLED = 'CANCELLED',
@@ -16,10 +17,9 @@ export type Passenger = {
 export class CreateBookingDto {
   @IsNotEmpty()
   user: CreateUserDto;
-  @IsNotEmpty()
   status: BookingStatus;
   @IsDateString()
-  date: Date;
+  date: string;
   @IsNotEmpty()
   passengers: Passenger[];
 }
