@@ -28,7 +28,7 @@ export class UserService {
 
   async findOrCreate(user: CreateUserDto): Promise<User> {
     const dbUser = await this.userModel.findOne({ email: user.email });
-    const returnUser = dbUser || await this.create(user);
+    const returnUser = dbUser || (await this.create(user));
     return returnUser;
   }
 
