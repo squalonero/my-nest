@@ -7,7 +7,7 @@ export const configService: ConfigService = new ConfigService();
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {
-    abortOnError: configService.get<boolean>('DEBUG') || false,
+    abortOnError: configService.get<boolean>('NEST_DEBUG') || false,
   });
 
   app.enableCors();
