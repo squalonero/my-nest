@@ -26,7 +26,7 @@ export class BookingService {
   }
 
   async findAll(page = 0): Promise<BookingDTO[]> {
-    const LIMIT = this.configService.get<number>('PAGINATION_LIMIT');
+    const LIMIT = parseInt(this.configService.get<string>('PAGINATION_LIMIT'));
 
     return this.bookingModel
       .aggregate(UsersAgg)
