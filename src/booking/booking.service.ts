@@ -8,6 +8,7 @@ import { CreateBookingDto } from './dto/create-booking.dto';
 import { UpdateBookingDto } from './dto/update-booking.dto';
 import { Availability } from './entities/availability.entity';
 import { Booking, BookingDocument } from './schemas/booking.schema';
+import { UsersAgg } from './utils/usersAgg';
 
 @Injectable()
 export class BookingService {
@@ -27,7 +28,7 @@ export class BookingService {
     const LIMIT = this.configService.get<number>('PAGINATION_LIMIT');
 
     return this.bookingModel
-      .find()
+      .aggregate(UsersAgg)
       .skip(page * LIMIT)
       .limit(LIMIT)
       .exec();
