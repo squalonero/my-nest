@@ -9,6 +9,7 @@ import { UpdateBookingDto } from './dto/update-booking.dto';
 import { Availability } from './entities/availability.entity';
 import { Booking, BookingDocument } from './schemas/booking.schema';
 import { UsersAgg } from './utils/usersAgg';
+import { BookingDTO } from './entities/booking.entity';
 
 @Injectable()
 export class BookingService {
@@ -24,7 +25,7 @@ export class BookingService {
     // return 'This action adds a new booking';
   }
 
-  async findAll(page = 0): Promise<Booking[]> {
+  async findAll(page = 0): Promise<BookingDTO[]> {
     const LIMIT = this.configService.get<number>('PAGINATION_LIMIT');
 
     return this.bookingModel

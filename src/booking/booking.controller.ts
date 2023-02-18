@@ -19,6 +19,7 @@ import { BookingStatus, CreateBookingDto } from './dto/create-booking.dto';
 import { ErrorResponseDto } from './dto/response-dto';
 import { UpdateBookingDto } from './dto/update-booking.dto';
 import { Availability } from './entities/availability.entity';
+import { BookingDTO } from './entities/booking.entity';
 import { Booking } from './schemas/booking.schema';
 
 @Controller('booking')
@@ -59,7 +60,7 @@ export class BookingController {
   async findAll(
     @Req() req: Request,
     @Query('page') page: number,
-  ): Promise<Booking[]> {
+  ): Promise<BookingDTO[]> {
     return this.bookingService.findAll(page);
   }
 
