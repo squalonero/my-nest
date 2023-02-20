@@ -10,14 +10,15 @@ export const UsersAgg = [
   {
     $project: {
       _id: 1,
+      user: '$user.email',
       status: 1,
       date: 1,
       passengers: 1,
-      user: '$user.email',
     },
   },
   {
     $project: {
+      _id: 1,
       user: {
         $ifNull: [
           {
@@ -26,6 +27,9 @@ export const UsersAgg = [
           '',
         ],
       },
+      status: 1,
+      date: 1,
+      passengers: 1,
     },
   },
 ];
