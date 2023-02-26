@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { InjectConnection, InjectModel } from '@nestjs/mongoose';
 import { Connection, Model, ObjectId } from 'mongoose';
@@ -10,6 +10,8 @@ import { Availability } from './entities/availability.entity';
 import { Booking, BookingDocument } from './schemas/booking.schema';
 import { UsersAgg } from './utils/usersAgg';
 import { BookingDTO } from './entities/booking.entity';
+import * as dayjs from 'dayjs';
+dayjs.locale('it');
 
 @Injectable()
 export class BookingService {
@@ -25,12 +27,20 @@ export class BookingService {
     // return 'This action adds a new booking';
   }
 
-  async findAll(page = 0): Promise<BookingDTO[]> {
+  async findAll(page = '0', date): Promise<BookingDTO[]> {
     const LIMIT = parseInt(this.configService.get<string>('PAGINATION_LIMIT'));
 
+    if (!date) date = dayjs().startOf('day').add(1, 'day').toDate();
+
+    if (!dayjs(date).isValid())
+      throw new Error('\n@@@@@@@@\n\n Invalid date \n\n@@@@@@@@\n');
+
+    date = dayjs(date).startOf('day').toDate();
+
+    console.log(date);
     return this.bookingModel
-      .aggregate(UsersAgg)
-      .skip(page * LIMIT)
+      .aggregate(UsersAgg(date))
+      .skip(parseInt(page) * LIMIT)
       .limit(LIMIT)
       .exec();
     // return `This action returns all booking`;

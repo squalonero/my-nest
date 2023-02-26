@@ -59,9 +59,10 @@ export class BookingController {
   @Get()
   async findAll(
     @Req() req: Request,
-    @Query('page') page: number,
+    @Query('page') page: string,
+    @Query('date') date: string | undefined,
   ): Promise<BookingDTO[]> {
-    return this.bookingService.findAll(page);
+    return this.bookingService.findAll(page, date);
   }
 
   @Get('getMonthAvailability')

@@ -13,6 +13,7 @@ import { AuthModule } from './auth/auth.module';
     ConfigModule.forRoot({
       envFilePath: '.dev.env',
       isGlobal: true,
+      load: [],
     }),
     MongooseModule.forRootAsync({
       // connectionName: 'default',
@@ -30,4 +31,11 @@ import { AuthModule } from './auth/auth.module';
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule {
+  constructor(private configService: ConfigService) {}
+
+  async onApplicationBootstrap() {
+    const timezone = this.configService.get<string>('timezone');
+    process.env.TZ = timezone;
+  }
+}

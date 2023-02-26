@@ -1,4 +1,4 @@
-export const UsersAgg = [
+export const UsersAgg = (reqDate: string) => [
   {
     $lookup: {
       from: 'users',
@@ -30,6 +30,14 @@ export const UsersAgg = [
       status: 1,
       date: 1,
       passengers: 1,
+    },
+  },
+  {
+    $match: {
+      date: {
+        $gte: reqDate,
+        $lte: reqDate,
+      },
     },
   },
 ];
