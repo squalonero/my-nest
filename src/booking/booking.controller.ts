@@ -11,7 +11,9 @@ import {
   ValidationPipe,
   Query,
 } from '@nestjs/common';
+import * as dayjs from 'dayjs';
 import { Request } from 'express';
+import { AuthService } from 'src/auth/auth.service';
 import { configService } from 'src/main';
 import { UserService } from 'src/user/user.service';
 import { BookingService } from './booking.service';
@@ -20,7 +22,7 @@ import { ErrorResponseDto } from './dto/response-dto';
 import { UpdateBookingDto } from './dto/update-booking.dto';
 import { Availability } from './entities/availability.entity';
 import { BookingDTO } from './entities/booking.entity';
-import { Booking } from './schemas/booking.schema';
+import { Booking, BookingDocument } from './schemas/booking.schema';
 
 @Controller('booking')
 export class BookingController {
@@ -29,6 +31,7 @@ export class BookingController {
   constructor(
     private readonly bookingService: BookingService,
     private readonly userService: UserService,
+    private readonly authService: AuthService,
   ) {}
 
   @Post()
@@ -37,11 +40,16 @@ export class BookingController {
     @Body() createBookingDto: CreateBookingDto,
   ): Promise<Booking | ErrorResponseDto> {
     const { user, ...booking } = createBookingDto;
+
+    // creates the user
     const bookingToSave = {
       user: await this.userService.findOrCreate(user),
       ...booking,
     };
-    // return createBookingDto;
+    // Send email confirmation
+    this.authService.signUp(bookingToSave.user);
+
+    //check availability before save
     const { total: totalBooked } = await this.getDayAvailability(
       bookingToSave.date,
     );
@@ -61,7 +69,9 @@ export class BookingController {
     @Req() req: Request,
     @Query('page') page: string,
     @Query('date') date: string | undefined,
-  ): Promise<BookingDTO[]> {
+  ): Promise<BookingDTO[] | ErrorResponseDto> {
+    if (!dayjs(date).isValid()) return { error: 'Invalid date' };
+
     return this.bookingService.findAll(page, date);
   }
 
@@ -90,8 +100,8 @@ export class BookingController {
   }
 
   @Get(':id')
-  async findOne(@Param('id') id: string): Promise<string> {
-    return this.bookingService.findOne(+id);
+  async findOne(@Param('id') id: string): Promise<Booking> {
+    return this.bookingService.findOne(id);
   }
 
   @Patch(':id')

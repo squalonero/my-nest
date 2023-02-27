@@ -32,12 +32,8 @@ export class BookingService {
 
     if (!date) date = dayjs().startOf('day').add(1, 'day').toDate();
 
-    if (!dayjs(date).isValid())
-      throw new Error('\n@@@@@@@@\n\n Invalid date \n\n@@@@@@@@\n');
-
     date = dayjs(date).startOf('day').toDate();
 
-    console.log(date);
     return this.bookingModel
       .aggregate(UsersAgg(date))
       .skip(parseInt(page) * LIMIT)
@@ -68,12 +64,20 @@ export class BookingService {
 
   async findByDate(date: string): Promise<Booking[]> {
     return this.bookingModel.find({
-      date: date,
+      date,
     });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} booking`;
+  async findByUserId(userId: string): Promise<Booking[]> {
+    return this.bookingModel.find({
+      user: userId,
+    });
+  }
+
+  async findOne(id: string): Promise<Booking> {
+    return this.bookingModel.findOne({
+      _id: id,
+    });
   }
 
   update(id: number, updateBookingDto: UpdateBookingDto) {

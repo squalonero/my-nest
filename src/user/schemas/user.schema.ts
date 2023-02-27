@@ -6,7 +6,7 @@ export type UserDocument = User & Document;
 @Schema() //maps this class to a collection called "Users" automatically
 export class User {
   @Prop()
-  id: string;
+  _id: string;
 
   @Prop()
   email: string;

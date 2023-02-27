@@ -1,4 +1,3 @@
-import { User } from 'src/user/user.entity';
 import { BookingStatus, Passenger } from '../dto/create-booking.dto';
 
 export class BookingDTO {

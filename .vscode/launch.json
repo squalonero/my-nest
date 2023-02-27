@@ -1,9 +1,10 @@
 {
     "configurations": [
+
     {
         "type": "node-terminal",
         "request": "launch",
-        "name": "Nest start Dev",
+        "name": "Watch Nest",
         "command": "npm run start:dev"
     }
     ]
