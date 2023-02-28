@@ -3,6 +3,7 @@ import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { BookingService } from 'src/booking/booking.service';
 import { BookingStatus } from 'src/booking/dto/create-booking.dto';
+import { UserService } from 'src/user/user.service';
 
 @Controller('auth')
 export class AuthController {
@@ -10,6 +11,7 @@ export class AuthController {
     private readonly jwtService: JwtService,
     private readonly configService: ConfigService,
     private readonly bookingService: BookingService,
+    private readonly userService: UserService,
   ) {}
 
   /**
@@ -37,9 +39,13 @@ export class AuthController {
         data.userId,
         BookingStatus.PENDING,
       );
+      const userInstance = await this.userService.findOne(data.userId);
+      const confirmedUser = await this.userService.updateOne(userInstance, {
+        confirmed: true,
+      });
 
       return {
-        verified: true,
+        verifiedToken: true,
         updated: updatedStatus,
       };
     } catch (e) {

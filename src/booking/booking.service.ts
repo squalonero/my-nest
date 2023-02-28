@@ -110,7 +110,6 @@ export class BookingService {
     userId: string,
     status: BookingStatus,
   ): Promise<number> {
-    console.log(userId);
     const updated = await this.bookingModel.updateMany(
       { user: userId },
       { $set: { status: status } },

@@ -46,16 +46,20 @@ export class BookingController {
       user: await this.userService.findOrCreate(user),
       ...booking,
     };
-    // Send email confirmation
-    this.authService.signUp(bookingToSave.user);
 
+    // Send email confirmation only to new users
+    if (!bookingToSave.user.confirmed) {
+      bookingToSave.status = BookingStatus.PENDING_EMAIL;
+      this.authService.signUp(bookingToSave.user);
+    } else {
+      bookingToSave.status = BookingStatus.PENDING;
+    }
     //check availability before save
     const { total: totalBooked } = await this.getDayAvailability(
       bookingToSave.date,
     );
 
     if (totalBooked + bookingToSave.passengers.length <= this.MAX_PPL) {
-      bookingToSave.status = BookingStatus.PENDING_EMAIL;
       return this.bookingService.create(bookingToSave);
     } else {
       return {

@@ -17,23 +17,27 @@ export class UserService {
     // return 'This action adds a new user';
   }
 
-  async findAll() {
+  async findAll(): Promise<UserDocument[]> {
     return this.userModel.find().exec();
     // return `This action returns all user`;
   }
 
-  async findOne(id: string): Promise<User> {
+  async findOne(id: string): Promise<UserDocument> {
     const user = await this.userModel.findOne({ _id: id });
     return user;
   }
 
-  async findOrCreate(user: CreateUserDto): Promise<User> {
+  async findOrCreate(
+    user: CreateUserDto,
+    create = true,
+  ): Promise<UserDocument> {
     const dbUser = await this.userModel.findOne({ email: user.email });
-    const returnUser = dbUser || (await this.create(user));
+    const returnUser =
+      dbUser && create ? this.userModel.create(user) : new this.userModel(user);
     return returnUser;
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
+  updatOne(id: string, updateUserDto: UpdateUserDto) {
     return `This action updates a #${id} user`;
   }
 

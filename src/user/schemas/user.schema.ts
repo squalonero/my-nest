@@ -14,6 +14,9 @@ export class User {
   @Prop()
   phone: string;
 
+  @Prop({ default: false })
+  confirmed: boolean;
+
   get _id(): string {
     return this._id.toString();
   }
