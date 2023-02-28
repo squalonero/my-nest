@@ -8,7 +8,7 @@ export type BookingDocument = Booking & Document;
 @Schema() //maps this class to a collection called "bookings" automatically
 export class Booking {
   @Prop()
-  _id: S.Types.ObjectId;
+  id: S.Types.ObjectId;
 
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'User' })
   user: User;

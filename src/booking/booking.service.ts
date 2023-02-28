@@ -1,16 +1,17 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { InjectConnection, InjectModel } from '@nestjs/mongoose';
-import { Connection, Model, ObjectId } from 'mongoose';
+import { Connection, Model, ObjectId, Types } from 'mongoose';
 import { DayAvailabilityAgg } from 'src/booking/utils/dayAvailabilityAgg';
 import { MonthAvailabilityAgg } from './utils/monthAvailabilityAgg';
-import { CreateBookingDto } from './dto/create-booking.dto';
+import { BookingStatus, CreateBookingDto } from './dto/create-booking.dto';
 import { UpdateBookingDto } from './dto/update-booking.dto';
 import { Availability } from './entities/availability.entity';
 import { Booking, BookingDocument } from './schemas/booking.schema';
 import { UsersAgg } from './utils/usersAgg';
 import { BookingDTO } from './entities/booking.entity';
 import * as dayjs from 'dayjs';
+import { formatUpdateBookingDto } from './utils/utils';
 dayjs.locale('it');
 
 @Injectable()
@@ -39,6 +40,18 @@ export class BookingService {
       .skip(parseInt(page) * LIMIT)
       .limit(LIMIT)
       .exec();
+    // return `This action returns all booking`;
+  }
+
+  async findAllCount(date): Promise<number> {
+    const LIMIT = parseInt(this.configService.get<string>('PAGINATION_LIMIT'));
+
+    if (!date) date = dayjs().startOf('day').add(1, 'day').toDate();
+
+    date = dayjs(date).startOf('day').toDate();
+
+    const data = await this.bookingModel.aggregate(UsersAgg(date)).exec();
+    return data.length;
     // return `This action returns all booking`;
   }
 
@@ -80,8 +93,29 @@ export class BookingService {
     });
   }
 
-  update(id: number, updateBookingDto: UpdateBookingDto) {
-    return `This action updates a #${id} booking`;
+  async update(
+    id: string,
+    updateBookingDto: UpdateBookingDto,
+  ): Promise<number> {
+    updateBookingDto = formatUpdateBookingDto(updateBookingDto);
+    const updated = await this.bookingModel.updateOne({ _id: id }, [
+      {
+        $set: updateBookingDto,
+      },
+    ]);
+    return updated.modifiedCount;
+  }
+
+  async updateStatusByUserId(
+    userId: string,
+    status: BookingStatus,
+  ): Promise<number> {
+    console.log(userId);
+    const updated = await this.bookingModel.updateMany(
+      { user: userId },
+      { $set: { status: status } },
+    );
+    return updated.modifiedCount;
   }
 
   async delete(id: string) {

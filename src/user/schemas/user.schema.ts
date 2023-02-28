@@ -6,13 +6,17 @@ export type UserDocument = User & Document;
 @Schema() //maps this class to a collection called "Users" automatically
 export class User {
   @Prop()
-  _id: string;
+  id: string;
 
   @Prop()
   email: string;
 
   @Prop()
   phone: string;
+
+  get _id(): string {
+    return this._id.toString();
+  }
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

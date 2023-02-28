@@ -71,8 +71,16 @@ export class BookingController {
     @Query('date') date: string | undefined,
   ): Promise<BookingDTO[] | ErrorResponseDto> {
     if (!dayjs(date).isValid()) return { error: 'Invalid date' };
-
     return this.bookingService.findAll(page, date);
+  }
+
+  @Get('count')
+  async findAllCount(
+    @Req() req: Request,
+    @Query('date') date: string | undefined,
+  ): Promise<number | ErrorResponseDto> {
+    if (!dayjs(date).isValid()) return { error: 'Invalid date' };
+    return this.bookingService.findAllCount(date);
   }
 
   @Get('getMonthAvailability')
@@ -108,8 +116,8 @@ export class BookingController {
   async update(
     @Param('id') id: string,
     @Body() updateBookingDto: UpdateBookingDto,
-  ): Promise<string> {
-    return this.bookingService.update(+id, updateBookingDto);
+  ): Promise<number> {
+    return this.bookingService.update(id, updateBookingDto);
   }
 
   @Delete(':id')

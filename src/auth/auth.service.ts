@@ -2,28 +2,28 @@ import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UserService } from 'src/user/user.service';
 import { MailService } from './../mail/mail.service';
-import { CreateUserDto } from 'src/user/dto/create-user.dto';
+import { ConfigService } from '@nestjs/config';
+import { User } from 'src/user/schemas/user.schema';
 
 @Injectable()
 export class AuthService {
   constructor(
     private mailService: MailService,
     private UserService: UserService,
-    private readonly jwtService: JwtService,
+    private readonly ConfigService: ConfigService,
+    private readonly JwtService: JwtService,
   ) {}
 
-  async signUp(user: CreateUserDto) {
-    // const token = Math.floor(1000 + Math.random() * 9000).toString();
-    // create user in db
-    const userInstance = await this.UserService.findOrCreate(user);
+  async signUp(user: User) {
+    const tokenDurationMins =
+      this.ConfigService.get<number>('JWT_DURATION_MINS');
 
-    const { _id: userID } = userInstance;
-    const token = this.jwtService.sign({
-      exp: Date.now() + 1000 * 60 * 10, // 10 mins
-      data: { userId: userID },
+    const token = this.JwtService.sign({
+      exp: Date.now() + 1000 * 60 * tokenDurationMins, // 10 mins
+      data: { userId: user._id },
     });
     // ...
     // send confirmation mail
-    await this.mailService.sendUserConfirmation(userInstance, token);
+    await this.mailService.sendUserConfirmation(user, token);
   }
 }

@@ -109,4 +109,3 @@ export const DayAvailabilityAgg = (inputDate): PipelineStage[] => [
   },
   { $sort: { _id: 1 } },
 ];
-

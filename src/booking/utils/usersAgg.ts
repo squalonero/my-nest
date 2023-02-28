@@ -1,4 +1,21 @@
+import { BookingStatus } from '../dto/create-booking.dto';
+
 export const UsersAgg = (reqDate: string) => [
+  {
+    $match: {
+      $or: [
+        {
+          status: BookingStatus.PENDING,
+        },
+        {
+          status: BookingStatus.CONFIRMED,
+        },
+        {
+          status: BookingStatus.CANCELLED,
+        },
+      ],
+    },
+  },
   {
     $lookup: {
       from: 'users',
