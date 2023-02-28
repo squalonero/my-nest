@@ -39,8 +39,8 @@ export class AuthController {
         data.userId,
         BookingStatus.PENDING,
       );
-      const userInstance = await this.userService.findOne(data.userId);
-      const confirmedUser = await this.userService.updateOne(userInstance, {
+      // const userInstance = await this.userService.findOne(data.userId);
+      const confirmedUser = await this.userService.updateOne(data.userId, {
         confirmed: true,
       });
 

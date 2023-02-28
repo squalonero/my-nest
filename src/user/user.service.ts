@@ -33,12 +33,14 @@ export class UserService {
   ): Promise<UserDocument> {
     const dbUser = await this.userModel.findOne({ email: user.email });
     const returnUser =
-      dbUser && create ? this.userModel.create(user) : new this.userModel(user);
+      !dbUser && create
+        ? this.userModel.create(user)
+        : new this.userModel(user);
     return returnUser;
   }
 
-  updatOne(id: string, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+  updateOne(id: string, updateUserDto: UpdateUserDto) {
+    return this.userModel.updateOne({ _id: id }, updateUserDto);
   }
 
   remove(id: number) {
