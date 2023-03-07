@@ -30,77 +30,37 @@ export const DayAvailabilityAgg = (inputDate): PipelineStage[] => [
     },
   },
   {
-    $match: {
-      $expr: {
-        $eq: ['$selectedDate', '$dateString'],
-      },
-    },
+    $match: { $expr: { $eq: ['$selectedDate', '$dateString'] } },
   },
   {
     $group: {
       _id: '$dateString',
       pending: {
         $sum: {
-          $cond: [
-            {
-              $eq: ['$status', 'PENDING'],
-            },
-            '$passengersSize',
-            0,
-          ],
+          $cond: [{ $eq: ['$status', 'PENDING'] }, '$passengersSize', 0],
         },
       },
       confirmed: {
         $sum: {
-          $cond: [
-            {
-              $eq: ['$status', 'CONFIRMED'],
-            },
-            '$passengersSize',
-            0,
-          ],
+          $cond: [{ $eq: ['$status', 'CONFIRMED'] }, '$passengersSize', 0],
         },
       },
       cancelled: {
         $sum: {
-          $cond: [
-            {
-              $eq: ['$status', 'CANCELLED'],
-            },
-            '$passengersSize',
-            0,
-          ],
+          $cond: [{ $eq: ['$status', 'CANCELLED'] }, '$passengersSize', 0],
         },
       },
       total: {
         $sum: {
           $add: [
             {
-              $cond: [
-                {
-                  $eq: ['$status', 'PENDING'],
-                },
-                '$passengersSize',
-                0,
-              ],
+              $cond: [{ $eq: ['$status', 'PENDING'] }, '$passengersSize', 0],
             },
             {
-              $cond: [
-                {
-                  $eq: ['$status', 'CONFIRMED'],
-                },
-                '$passengersSize',
-                0,
-              ],
+              $cond: [{ $eq: ['$status', 'CONFIRMED'] }, '$passengersSize', 0],
             },
             {
-              $cond: [
-                {
-                  $eq: ['$status', 'CANCELLED'],
-                },
-                '$passengersSize',
-                0,
-              ],
+              $cond: [{ $eq: ['$status', 'CANCELLED'] }, '$passengersSize', 0],
             },
           ],
         },
