@@ -28,18 +28,20 @@ export class BookingService {
     // return 'This action adds a new booking';
   }
 
-  async findAll(page = '0', date): Promise<BookingDTO[]> {
-    const LIMIT = parseInt(this.configService.get<string>('PAGINATION_LIMIT'));
+  async findAll(date): Promise<BookingDTO[]> {
+    // const LIMIT = parseInt(this.configService.get<string>('PAGINATION_LIMIT'));
 
     if (!date) date = dayjs().startOf('day').add(1, 'day').toDate();
 
     date = dayjs(date).startOf('day').toDate();
 
-    return this.bookingModel
-      .aggregate(UsersAgg(date))
-      .skip(parseInt(page) * LIMIT)
-      .limit(LIMIT)
-      .exec();
+    return (
+      this.bookingModel
+        .aggregate(UsersAgg(date))
+        // .skip(parseInt(page) * LIMIT)
+        // .limit(LIMIT)
+        .exec()
+    );
     // return `This action returns all booking`;
   }
 

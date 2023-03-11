@@ -32,8 +32,7 @@ export class UserService {
     create = true,
   ): Promise<UserDocument> {
     const dbUser = await this.userModel.findOne({ email: user.email });
-    const returnUser =
-      !dbUser && create ? await this.userModel.create(user) : dbUser;
+    const returnUser = !dbUser && create ? new this.userModel(user) : dbUser;
     return returnUser;
   }
 

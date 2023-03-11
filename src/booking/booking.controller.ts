@@ -47,10 +47,16 @@ export class BookingController {
       ...booking,
     };
 
-    // Send email confirmation only to new users
-    if (!bookingToSave.user.confirmed) {
+    if (!bookingToSave.user.isNew && !bookingToSave.user.confirmed)
+      return {
+        error: 'User must confirm email',
+      };
+
+    if (bookingToSave.user.isNew) {
+      // Send email confirmation only to new users
       bookingToSave.status = BookingStatus.PENDING_EMAIL;
       this.authService.signUp(bookingToSave.user);
+      bookingToSave.user.save();
     } else {
       bookingToSave.status = BookingStatus.PENDING;
     }
@@ -71,11 +77,11 @@ export class BookingController {
   @Get()
   async findAll(
     @Req() req: Request,
-    @Query('page') page: string,
+    // @Query('page') page: string,
     @Query('date') date: string | undefined,
   ): Promise<BookingDTO[] | ErrorResponseDto> {
     if (!dayjs(date).isValid()) return { error: 'Invalid date' };
-    return this.bookingService.findAll(page, date);
+    return this.bookingService.findAll(date);
   }
 
   @Get('count')
