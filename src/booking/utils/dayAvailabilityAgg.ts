@@ -35,6 +35,15 @@ export const DayAvailabilityAgg = (inputDate): PipelineStage[] => [
   {
     $group: {
       _id: '$dateString',
+      pending_email: {
+        $sum: {
+          $cond: [
+            { $eq: ['$status', 'PENDING_EMAIL_CONFIRMATION'] },
+            '$passengersSize',
+            0,
+          ],
+        },
+      },
       pending: {
         $sum: {
           $cond: [{ $eq: ['$status', 'PENDING'] }, '$passengersSize', 0],
