@@ -31,8 +31,6 @@ export class BookingService {
   async findAll(date): Promise<BookingDTO[]> {
     // const LIMIT = parseInt(this.configService.get<string>('PAGINATION_LIMIT'));
 
-    if (!date) date = dayjs().startOf('day').add(1, 'day').toDate();
-
     date = dayjs(date).startOf('day').toDate();
 
     return (
