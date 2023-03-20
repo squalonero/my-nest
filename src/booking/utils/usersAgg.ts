@@ -27,7 +27,10 @@ export const UsersAgg = (reqDate: string) => [
   {
     $project: {
       _id: 1,
-      user: '$user.email',
+      user: {
+        email: '$user.email',
+        phone: '$user.phone',
+      },
       status: 1,
       date: 1,
       passengers: 1,
