@@ -47,10 +47,13 @@ export class BookingController {
       ...booking,
     };
 
-    if (!bookingToSave.user.isNew && !bookingToSave.user.confirmed)
+    if (!bookingToSave.user.isNew && !bookingToSave.user.confirmed) {
+      this.authService.signUp(bookingToSave.user);
       return {
-        error: 'User must confirm email',
+        error:
+          'Per favore conferma la tua email. Ti abbiamo inviato una nuova richiesta di conferma, controlla la tua casella di posta.',
       };
+    }
 
     if (bookingToSave.user.isNew) {
       // Send email confirmation only to new users
