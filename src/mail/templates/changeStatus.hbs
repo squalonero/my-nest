@@ -1,0 +1,10 @@
+<p>Gentile cliente,</p>
+<p>La tua prenotazione:</p>
+<p>Data: {{date}}</p>
+<p>Passeggeri: </p>
+{{#each passengers }}
+    <p>{{this.name}} {{this.lastName}}</p>
+{{/each}}
+<p>ha cambiato stato in: {{status}}</p>
+
+<p>Se non hai richiesto questa email, puoi ignorarla.</p>

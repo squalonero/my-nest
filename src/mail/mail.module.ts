@@ -4,6 +4,8 @@ import { join } from 'path';
 import { MailService } from './mail.service';
 import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter';
 import { ConfigService } from '@nestjs/config';
+import { BookingModule } from 'src/booking/booking.module';
+import { UserModule } from 'src/user/user.module';
 
 @Global()
 @Module({
@@ -35,6 +37,8 @@ import { ConfigService } from '@nestjs/config';
         },
       }),
     }),
+    BookingModule,
+    UserModule,
   ],
   providers: [MailService],
   exports: [MailService],

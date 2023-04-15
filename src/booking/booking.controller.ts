@@ -23,12 +23,14 @@ import { UpdateBookingDto } from './dto/update-booking.dto';
 import { Availability } from './entities/availability.entity';
 import { BookingDTO } from './entities/booking.entity';
 import { Booking, BookingDocument } from './schemas/booking.schema';
+import { MailService } from 'src/mail/mail.service';
 
 @Controller('booking')
 export class BookingController {
   private MAX_PPL = parseInt(configService.get('MAX_PEOPLE_PER_DAY'));
 
   constructor(
+    private mailService: MailService,
     private readonly bookingService: BookingService,
     private readonly userService: UserService,
     private readonly authService: AuthService,
@@ -130,6 +132,13 @@ export class BookingController {
     @Param('id') id: string,
     @Body() updateBookingDto: UpdateBookingDto,
   ): Promise<number> {
+    const { date, status } = updateBookingDto;
+    if (date) {
+      this.mailService.sendUpdateDate(id, date);
+    }
+    if (status) {
+      this.mailService.sendUpdateStatus(id, status);
+    }
     return this.bookingService.update(id, updateBookingDto);
   }
 

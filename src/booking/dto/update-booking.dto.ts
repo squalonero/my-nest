@@ -7,7 +7,7 @@ import { BookingStatus, Passenger } from './create-booking.dto';
 export class UpdateBookingDto {
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'User' })
   user?: User;
-  status?: BookingStatus;
+  status?: keyof typeof BookingStatus;
   date?: Date;
   passengers?: Passenger[];
 }
